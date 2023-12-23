@@ -37,7 +37,18 @@ def check_ydotool_installed():
         messagebox.showerror("Error", "ydotool is not installed.")
         exit()
         return False
-
+        
+def check_xdotool_installed():
+    try:
+        # Use subprocess to run the 'xdotool' command and check its return status
+        subprocess.run(["which", "xdotool"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return True
+    except subprocess.CalledProcessError:
+        print("xdotool is not installed.")
+        messagebox.showerror("Error", "xdotool is not installed.")
+        exit()
+        return False
+ 
 #Main
 if os_type.startswith('win'):
 	required_packages = ['pyautogui', 'keyboard', 'pygetwindow', 'psutil']
@@ -76,6 +87,7 @@ elif os_type.startswith('linux'):
     	subprocess.Popen("ydotoold", shell=True)
     elif is_running_on_xorg():
     	print("Running on Xorg session")
+    	check_xdotool_installed()
     else:
     	print("Unknow desktop session")
     	exit()
